@@ -36,7 +36,6 @@
      ```bash
    docker run -d --env-file=.env --name {your-desired- container-name} -p {your-desired-port}:8080 {your-desired-image-name}
     ```
-   ```
    
  - **Or you can run the project directly by running the below script** 
     ```go
