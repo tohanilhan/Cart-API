@@ -14,12 +14,12 @@ func PublicRoute(route fiber.Router) {
 	route.Post("/products/", controllers.AddProductToBasket) //Add product to basket
 
 	// show cart of products in basket
-	route.Get("/products/basket", controllers.ShowBasket) //Show basket
+	route.Get("/products/basket/", controllers.ShowBasket) //Show basket
 
-	// // remove product from basket
-	// route.Delete("/products/basket/:id", controllers.RemoveProductFromBasket) //Remove product from basket
+	// remove product from basket
+	route.Delete("/products/basket/", controllers.RemoveProductFromBasket) //Remove product from basket
 
-	// // complete order
-	// route.Post("/products/order", controllers.CompleteOrder) //Complete order
+	// complete order
+	route.Get("/products/order", controllers.CompleteOrder) //Complete order
 
 }
