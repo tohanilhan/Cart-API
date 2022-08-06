@@ -10,11 +10,11 @@ func PublicRoute(route fiber.Router) {
 
 	route.Get("/products/", controllers.ListAllProducts) //Get all products
 
-	//// add product to basket
-	//route.Post("/products/basket", controllers.AddProductToBasket) //Add product to basket
+	// add product to basket
+	route.Post("/products/", controllers.AddProductToBasket) //Add product to basket
 
-	// // show cart of products in basket
-	// route.Get("/products/basket", controllers.ShowBasket) //Show basket
+	// show cart of products in basket
+	route.Get("/products/basket", controllers.ShowBasket) //Show basket
 
 	// // remove product from basket
 	// route.Delete("/products/basket/:id", controllers.RemoveProductFromBasket) //Remove product from basket

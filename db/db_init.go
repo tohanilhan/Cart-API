@@ -32,7 +32,7 @@ func InitDb() {
 	pq := fmt.Sprintf(connStr, DbConf.User, DbConf.Pass, DbConf.Host, DbConf.Port, DbConf.Db, DbConf.SslMode)
 	Db = sqlx.MustConnect("postgres", pq)
 
-	err := (Db).Ping()
+	err := Db.Ping()
 
 	if err != nil {
 		panic(err)

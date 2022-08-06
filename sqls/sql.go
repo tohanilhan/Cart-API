@@ -1,19 +1,11 @@
 package sqls
 
 const (
-	// CreateTableQuery is the query to create table
-	CreateTableQuery = `CREATE TABLE IF NOT EXISTS pf_schema.products
-	(
-		product_id               uuid primary key,
-		product_name             varchar(200),
-		price                    float,
-		vat                      varchar(4),
-		total                    int2
-	);`
 
-	// GetAllProductsQuery is the query to get all products
-	GetAllProductsQuery = `SELECT * FROM %s.%s`
-	
-	
-
+	// GetAllProducts is the query to get all products
+	GetAllProducts = `SELECT * FROM %s.%s`
+	// GetProduct is the query to get a product
+	GetProduct = `SELECT * FROM %s.%s WHERE product_id = '%s'`
+	// UpdateProduct is the query to update a product
+	UpdateProduct = `UPDATE %s.%s SET quantity = %d WHERE product_id = '%s'`
 )
