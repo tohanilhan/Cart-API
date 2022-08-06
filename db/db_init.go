@@ -19,14 +19,15 @@ var (
 func InitDb() {
 	// load database config
 	DbConf = &structs.DbConfig{
-		Host:      os.Getenv("DB_HOST"),
-		Port:      os.Getenv("DB_PORT"),
-		Db:        os.Getenv("DB_DB"),
-		Schema:    os.Getenv("DB_SCHEMA"),
-		User:      os.Getenv("DB_USER"),
-		Pass:      os.Getenv("DB_PASS"),
-		TableName: os.Getenv("DB_TABLE_NAME"),
-		SslMode:   "disable",
+		Host:             os.Getenv("DB_HOST"),
+		Port:             os.Getenv("DB_PORT"),
+		Db:               os.Getenv("DB_DB"),
+		Schema:           os.Getenv("DB_SCHEMA"),
+		User:             os.Getenv("DB_USER"),
+		Pass:             os.Getenv("DB_PASS"),
+		TableNameProduct: os.Getenv("DB_TABLE_NAME_PRODUCTS"),
+		TableNameOrder:   os.Getenv("DB_TABLE_NAME_ORDERS"),
+		SslMode:          "disable",
 	}
 	connStr := "postgres://%s:%s@%s:%s/%s?sslmode=%s"
 	pq := fmt.Sprintf(connStr, DbConf.User, DbConf.Pass, DbConf.Host, DbConf.Port, DbConf.Db, DbConf.SslMode)
