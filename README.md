@@ -41,20 +41,27 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
     - *`brew install docker`*
     - *`docker run hello-world`*
   
- 
+ ---
+
 - #### **PostgreSQL:**
 
   Plese refer [**here**](docs/README.md) or [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/docs/README.md) for the initialization scripts.
 
+---
+
 - #### **Go:**
   
   If you haven't done already, You need to install Go by following the instructions on the [Go website](https://golang.org/doc/install).
+
+---
 
 - #### **Project:**
   
   You have to clone the project from the [Github repository](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project) and run the below script to build the project
    
    *`git clone https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project.git`*
+
+---
 
 - #### **Run the Project:**
 
@@ -64,9 +71,9 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
 
    *`docker run -d --env-file=.env --name {your-desired- container-name} -p {your-desired-port}:8080 {your-desired-image-name}`*
 
-   **Be careful with the port number. You can't run this project as a docker container while DB_HOST is set to 127.0.0.1 in .env file**
+   **Note:** Be careful with the port number. You **can't** run this project as a docker container while **DB_HOST** is set to **127.0.0.1** in .env file
    
-   **If you want to run the project as a docker container, you have to change the DB_HOST to the IP address of the container mentioned in the .env file** Refer [**here**](.env) or [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/.env) for the .env file.
+   **Note:** If you want to run the project as a docker container, you have to change the **DB_HOST** to the **IP address of the container** mentioned in the **.env** file. Refer [**here**](.env) or [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/.env) for the .env file.
 
 
    **Example:**
@@ -84,9 +91,13 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
 
     **Note:** If you are using **VS Code** as your editor, you can simply run this project with debug mode by pressing **F5**.
 
+---
+
 - #### **For Testing the Project's endpoints via Postman**
  
   There is a [Postman collection](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/docs/PropertyFinder-FinalProject.postman_collection.json) that you can import to Postman and run the tests.
+
+---
 
 - #### **For Testing the Project**
      
@@ -102,7 +113,7 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
     *`go test -v  finish_order_test.go finish_order.go`*
 
    **Or you can directly test the whole unit test in the given directory by running the below script:**
-   
+
     *`go test -v  .`*
 
     **If you want to run the unit test for main, you need to make sure that DB_HOST is set to 127.0.0.1 in .env file**
