@@ -30,8 +30,7 @@ func StartServerWithGracefulShutdown(a *fiber.App) {
 
 	// Build Fiber connection URL.
 	fiberConnURL := fmt.Sprintf(
-		"%s:%s",
-		os.Getenv("SERVER_HOST"),
+		":%s",
 		os.Getenv("SERVER_PORT"),
 	)
 
@@ -47,8 +46,7 @@ func StartServerWithGracefulShutdown(a *fiber.App) {
 func StartServer(a *fiber.App) {
 	// Build Fiber connection URL.
 	fiberConnURL := fmt.Sprintf(
-		"%s:%s",
-		os.Getenv("SERVER_HOST"),
+		":%s",
 		os.Getenv("SERVER_PORT"),
 	)
 
