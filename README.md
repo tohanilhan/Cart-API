@@ -70,4 +70,16 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
  
   There is a [Postman collection](https://github.com/tohanilhan/docs/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/PropertyFinder-FinalProject.postman_collection.json) that you can import to Postman and run the tests.
 
+- #### **For Testing the Project**
+     
+  You can run the below script to run the unit tests:
+  
+  **You have to be in the same file with the test files**
+  
+    *`go test -v  {test-file-name} {original-file-name}`*
+
+    For example, if you want to run the unit tests for the `finish_order.go` file, you can run the below script:
+
+    *`go test -v  finish_order_test.go finish_order.go`*
+
 ---
