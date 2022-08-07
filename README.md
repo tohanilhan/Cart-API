@@ -44,7 +44,7 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
  
 - #### **PostgreSQL:**
 
-  Plese refer [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/docs/README.md) for the initialization scripts.
+  Plese refer [**here**](docs/README.md) or [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/docs/README.md) for the initialization scripts.
 
 - #### **Go:**
   
@@ -59,27 +59,46 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
 - #### **Run the Project:**
 
      You have to make sure that you are in the **same directory as the project**. Then you can run the below script:
-    *`docker build -t {your-desired-image-name} .`*
 
-     *`docker run -d --env-file=.env --name {your-desired- container-name} -p {your-desired-port}:8080 {your-desired-image-name}`*
+   *`docker build -t {your-desired-image-name} .`*
+
+   *`docker run -d --env-file=.env --name {your-desired- container-name} -p {your-desired-port}:8080 {your-desired-image-name}`*
+
+   **Be careful with the port number. You can't run this project as a docker container while DB_HOST is set to 127.0.0.1 in .env file**
+   
+   **If you want to run the project as a docker container, you have to change the DB_HOST to the IP address of the container mentioned in the .env file** Refer [**here**](.env) or [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/.env) for the .env file.
+
+
+   **Example:**
+
+   *`docker build -t project-pf-img:1.0 .`*
+
+   *`docker run -d --env-file=.env --name project-pf-cnt -p 8080:8080 project-pf-img:1.0`*
+
    
   Or you can run the project directly by running the below script from the same directory as the project:
     `go run main.go`
 
 - #### **For Testing the Project's endpoints via Postman**
  
-  There is a [Postman collection](https://github.com/tohanilhan/docs/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/PropertyFinder-FinalProject.postman_collection.json) that you can import to Postman and run the tests.
+  There is a [Postman collection](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/docs/PropertyFinder-FinalProject.postman_collection.json) that you can import to Postman and run the tests.
 
 - #### **For Testing the Project**
      
   You can run the below script to run the unit tests:
   
   **You have to be in the same file with the test files**
-  
+
+
     *`go test -v  {test-file-name} {original-file-name}`*
 
     For example, if you want to run the unit tests for the `finish_order.go` file, you can run the below script:
 
     *`go test -v  finish_order_test.go finish_order.go`*
+
+   **Or you can directly test the whole unit test in the given directory by running the below script:**
+    *`go test -v  .`*
+
+    **If you want to run the unit test for main, you need to make sure that DB_HOST is set to 127.0.0.1 in .env file**
 
 ---
