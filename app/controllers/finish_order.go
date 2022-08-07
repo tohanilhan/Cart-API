@@ -17,9 +17,9 @@ import (
 )
 
 var (
-	orderTotalAmount float64
-	orderTimestamp   string
-	month            string
+	OrderTotalAmount float64
+	OrderTimestamp   string
+	Month            string
 )
 
 func CompleteOrder(c *fiber.Ctx) error {
@@ -32,10 +32,10 @@ func CompleteOrder(c *fiber.Ctx) error {
 		})
 	}
 
-	timestamp, timex, month := utils.GetTimestamp()
+	timestamp, timex, Month := utils.GetTimestamp()
 
 	// get last order from db
-	query := fmt.Sprintf(sqls.GetOrder, db.DbConf.Schema, db.DbConf.TableNameOrder, vars.UserId, vars.GivenAmount, "'%"+month+"%'")
+	query := fmt.Sprintf(sqls.GetOrder, db.DbConf.Schema, db.DbConf.TableNameOrder, vars.UserId, vars.GivenAmount, "'%"+Month+"%'")
 	rows, err := db.Db.Query(query)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -47,7 +47,7 @@ func CompleteOrder(c *fiber.Ctx) error {
 
 	// iterate over rows
 	for rows.Next() {
-		err := rows.Scan(&orderTotalAmount, &orderTimestamp)
+		err := rows.Scan(&OrderTotalAmount, &OrderTimestamp)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"success": false,
@@ -193,7 +193,7 @@ func CalculateDiscount() (float64, string, float64) {
 	}
 
 	// If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off.
-	if totalPriceWithoutDiscount > vars.DiscountOnOrderMoreThanGivenAmountInAMonth && strings.Contains(orderTimestamp, month) {
+	if totalPriceWithoutDiscount > vars.DiscountOnOrderMoreThanGivenAmountInAMonth && strings.Contains(OrderTimestamp, Month) {
 
 		vars.DiscountOnOrderMoreThanGivenAmountInAMonth = totalPriceWithoutDiscount * 0.1
 
