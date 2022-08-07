@@ -10,7 +10,25 @@
 			"name": "Get All Products",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8080/api/v1/products-api/products/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"products-api",
+						"products",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -21,13 +39,39 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"product_id\": \"87234a95-b9c5-47cd-8249-37ada8207a8c\"\n}",
+					"raw": "{\n    \"product_id\":\"87234a95-b9c5-47cd-8249-37ada8207a8c\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/api/v1/products-api/products/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"products-api",
+						"products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Cart",
+			"request": {
+				"method": "GET",
+				"header": [],
 				"url": {
 					"raw": "http://127.0.0.1:8080/api/v1/products-api/products/basket",
 					"protocol": "http",
@@ -50,21 +94,13 @@
 			"response": []
 		},
 		{
-			"name": "Get Cart",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
 			"name": "Delete from Cart",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"product_id\": \"43565584-4b2b-482f-9fc6-b947cac437c8\"\n}",
+					"raw": "{\n    \"product_id\":\"87234a95-b9c5-47cd-8249-37ada8207a8c\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -97,7 +133,25 @@
 			"name": "Finish Order",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8080/api/v1/products-api/products/order",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"products-api",
+						"products",
+						"order"
+					]
+				}
 			},
 			"response": []
 		}
