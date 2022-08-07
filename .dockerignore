@@ -2,8 +2,6 @@
 .dockerignore
 .editorconfig
 .gitignore
-.env
-.env.example
 Dockerfile
 Makefile
 LICENSE
@@ -15,3 +13,4 @@ todo.txt
 .git/
 .github/
 build/
+vscode/

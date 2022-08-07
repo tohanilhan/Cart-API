@@ -44,7 +44,7 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
  
 - #### **PostgreSQL:**
 
-  Plese refer [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/db/README.md) for the initialization scripts.
+  Plese refer [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/docs/README.md) for the initialization scripts.
 
 - #### **Go:**
   
@@ -68,6 +68,6 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
 
 - #### **For Testing the Project's endpoints via Postman**
  
-  There is a [Postman collection](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/PropertyFinder-FinalProject.postman_collection.json) that you can import to Postman and run the tests.
+  There is a [Postman collection](https://github.com/tohanilhan/docs/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/PropertyFinder-FinalProject.postman_collection.json) that you can import to Postman and run the tests.
 
 ---
