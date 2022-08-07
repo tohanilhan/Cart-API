@@ -42,6 +42,7 @@ type Order struct {
 	UserId                    uuid.UUID `json:"user_id"`
 	Cart                      []Cart    `json:"cart"`
 	Discount                  float64   `json:"discount"`
+	DiscountReason            string    `json:"discount_reason"`
 	TotalPriceWithDiscount    float64   `json:"total_price_with_discount"`
 	TotalPriceWithoutDiscount float64   `json:"total_price_without_discount"`
 	Timestamp                 string    `json:"timesamp"`
