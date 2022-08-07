@@ -15,7 +15,6 @@ GRANT  CONNECT ON DATABASE pf_db  TO postgres;
 
 
 --all creation queries goes here: START
-
 CREATE TABLE IF NOT EXISTS pf_schema.products
 (
     product_id               uuid primary key,
@@ -25,7 +24,8 @@ CREATE TABLE IF NOT EXISTS pf_schema.products
     quantity                   int2
 );
 
-CREATE INDEX index_product_name_from_products on pf_schema.products (product_name);
+CREATE INDEX IF NOT EXISTS index_product_name_from_products on pf_schema.products (product_name);
+
 
 
  CREATE TABLE IF NOT EXISTS pf_schema.orders(
@@ -33,14 +33,14 @@ CREATE INDEX index_product_name_from_products on pf_schema.products (product_nam
 	user_id                 uuid,
 	cart                   json,
 	discount               float,
-    discount_reason        text,
+	discount_reason        text,
 	total_price_with_discount float,
     total_price_without_discount float,
     time bigint,
     timestamp text
 );
 
-CREATE INDEX index_user_id_from_orders on pf_schema.orders (user_id);
+CREATE INDEX IF NOT EXISTS index_user_id_from_orders on pf_schema.orders (user_id);
 
 
 INSERT INTO pf_schema.products(product_id, product_name, price, vat, quantity) VALUES ('81c815c6-d4cc-4a3f-9161-41540196d907','Iphone 13 Pro Max',999,18,30);

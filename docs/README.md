@@ -1,9 +1,9 @@
 
 # POSTGRESQL
 
-You have to make sure that you are in the **db directory inside the project**.
+You have to make sure that you are in the **docs directory inside the project**.
 
-`cd db`
+`cd Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/docs`
 
 **init-db.sql** file is used to initialize the database.
 
