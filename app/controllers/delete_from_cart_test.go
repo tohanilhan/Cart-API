@@ -1,9 +1,10 @@
-package controllers
+package controllers_test
 
 import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/app/controllers"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/structs"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/vars"
 )
@@ -62,7 +63,7 @@ func TestDeleteProductFromBasket(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := DeleteProductFromBasket(tt.args.productId); got != tt.want {
+			if got := controllers.DeleteProductFromBasket(tt.args.productId); got != tt.want {
 				t.Errorf("DeleteProductFromBasket() = %v, want %v", got, tt.want)
 			}
 		})

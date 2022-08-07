@@ -1,9 +1,10 @@
-package controllers
+package controllers_test
 
 import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/app/controllers"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/pkg/utils"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/structs"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/vars"
@@ -143,10 +144,10 @@ func TestCalculateDiscount(t *testing.T) {
 			vars.TotalOrder = tt.args.totalOrder
 			vars.GivenAmount = tt.args.givenAmount
 			vars.Cart = tt.args.cart
-			month = tt.args.month
-			orderTimestamp, _, _ = utils.GetTimestamp()
+			controllers.Month = tt.args.month
+			controllers.OrderTimestamp, _, _ = utils.GetTimestamp()
 
-			totalPriceWithoutDiscount, reason, totalPriceWithDiscount := CalculateDiscount()
+			totalPriceWithoutDiscount, reason, totalPriceWithDiscount := controllers.CalculateDiscount()
 
 			if totalPriceWithoutDiscount != tt.want {
 				t.Errorf("CalculateDiscount() totalPriceWithoutDiscount = %v, want %v", totalPriceWithoutDiscount, tt.want)
