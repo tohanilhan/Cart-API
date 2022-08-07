@@ -1,7 +1,7 @@
 
 # POSTGRESQL
 
-You have to make sure that you are in the **db directory at the project**.
+You have to make sure that you are in the **db directory inside the project**.
 
 `cd db`
 
