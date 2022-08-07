@@ -77,7 +77,12 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
 
    
   Or you can run the project directly by running the below script from the same directory as the project:
+    
     `go run main.go`
+    
+    **Note:** You have to change the DB_HOST to 127.0.0.1 in .env file to run the project as a docker container.
+
+    **Note:** If you are using **VS Code** as your editor, you can simply run this project with debug mode by pressing **F5**.
 
 - #### **For Testing the Project's endpoints via Postman**
  
