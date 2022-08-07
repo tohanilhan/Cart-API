@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -28,7 +29,11 @@ func StartServerWithGracefulShutdown(a *fiber.App) {
 	}()
 
 	// Build Fiber connection URL.
-	fiberConnURL, _ := ConnectionURLBuilder("fiber")
+	fiberConnURL := fmt.Sprintf(
+		"%s:%s",
+		os.Getenv("SERVER_HOST"),
+		os.Getenv("SERVER_PORT"),
+	)
 
 	// Run server.
 	if err := a.Listen(fiberConnURL); err != nil {
@@ -41,7 +46,11 @@ func StartServerWithGracefulShutdown(a *fiber.App) {
 // StartServer func for starting a simple server.
 func StartServer(a *fiber.App) {
 	// Build Fiber connection URL.
-	fiberConnURL, _ := ConnectionURLBuilder("fiber")
+	fiberConnURL := fmt.Sprintf(
+		"%s:%s",
+		os.Getenv("SERVER_HOST"),
+		os.Getenv("SERVER_PORT"),
+	)
 
 	// Run server.
 	if err := a.Listen(fiberConnURL); err != nil {
