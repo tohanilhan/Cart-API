@@ -44,6 +44,7 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
  
 - #### **PostgreSQL:**
   You have to run the below script to download and initialize **Postgresql**
+
    *`docker run -d --name ctip-pg-cnt -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=kbueRm8nuEj9DBVK -e POSTGRES_DB=postgres -v /Users/tohanilhan/Vault/code/PgDb/DataVolume:/var/lib/postgresql/data -p 5433:5432 postgres:latest`*
 
 - #### **Go:**
