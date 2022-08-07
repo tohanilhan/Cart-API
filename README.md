@@ -27,6 +27,8 @@
    1.  Every fourth order whose total is more than given amount may have discount
 depending on products. Products whose VAT is %1 don’t have any discount but products whose VAT is %8 and %18 have discount of %10 and %15 respectively.
    2. If there are more than 3 items of the same product, then fourth and subsequent ones would have %8 off.
+   3. c. If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off.
+   4. Only one discount can be applied at a time. Only the highest discount should be applied.
 
 ---
 
