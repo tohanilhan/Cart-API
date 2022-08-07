@@ -33,6 +33,7 @@ CREATE INDEX index_product_name_from_products on pf_schema.products (product_nam
 	user_id                 uuid,
 	cart                   json,
 	discount               float,
+    discount_reason        text,
 	total_price_with_discount float,
     total_price_without_discount float,
     time bigint,
