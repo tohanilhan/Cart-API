@@ -5,7 +5,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/app/controllers"
-	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/pkg/utils"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/structs"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/vars"
 )
@@ -70,10 +69,11 @@ func TestCalculateDiscount(t *testing.T) {
 	})
 
 	type args struct {
-		totalOrder  int16
-		givenAmount float64
-		cart        []structs.Cart
-		month       string
+		totalOrder       int16
+		orderTotalAmount float64
+		givenAmount      float64
+		cart             []structs.Cart
+		month            string
 	}
 
 	tests := []struct {
@@ -88,7 +88,7 @@ func TestCalculateDiscount(t *testing.T) {
 		// Discount discount on same third products and fourth order but not more than given amount in a month
 		{
 			name:  "Test case 1",
-			args:  args{totalOrder: 3, givenAmount: 4000, cart: cart1, month: "February"},
+			args:  args{totalOrder: 3, givenAmount: 4000, cart: cart1, month: "February", orderTotalAmount: 2000},
 			want:  2000,
 			want1: "If there are more than 3 items of the same product, then fourth and subsequent ones would have %8 off.",
 			want2: 1936,
@@ -97,7 +97,7 @@ func TestCalculateDiscount(t *testing.T) {
 		// Discount discount on same third products and fourth order but also more purchases made more than given amount in a month
 		{
 			name:  "Test case 2",
-			args:  args{totalOrder: 3, givenAmount: 4000, cart: cart1, month: "August"},
+			args:  args{totalOrder: 3, givenAmount: 4000, cart: cart1, month: "August", orderTotalAmount: 4001},
 			want:  2000,
 			want1: "If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off.",
 			want2: 1800,
@@ -106,7 +106,7 @@ func TestCalculateDiscount(t *testing.T) {
 		// Discount on same third products because its not fourth order but purchases made more than given amount in a month
 		{
 			name:  "Test case 3",
-			args:  args{totalOrder: 2, givenAmount: 3000, cart: cart1, month: "August"},
+			args:  args{totalOrder: 2, givenAmount: 3000, cart: cart1, month: "August", orderTotalAmount: 3000},
 			want:  2000,
 			want1: "If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off.",
 			want2: 1800,
@@ -115,7 +115,7 @@ func TestCalculateDiscount(t *testing.T) {
 		// Discount on fourth order more than given amount
 		{
 			name:  "Test case 4",
-			args:  args{totalOrder: 3, givenAmount: 1200, cart: cart2, month: "February"},
+			args:  args{totalOrder: 3, givenAmount: 1200, cart: cart2, month: "February", orderTotalAmount: 0},
 			want:  1200,
 			want1: "Every fourth order whose total is more than given amount may have discount depending on products. Products whose VAT is %1 don’t have any discount but products whose VAT is %8 and %18 have discount of %10 and %15 respectively.",
 			want2: 1100,
@@ -124,7 +124,7 @@ func TestCalculateDiscount(t *testing.T) {
 		// Discount on fourth order less than given amount in a month but purchases made more than given amount in a month
 		{
 			name:  "Test case 5",
-			args:  args{totalOrder: 3, givenAmount: 3000, cart: cart2, month: "August"},
+			args:  args{totalOrder: 3, givenAmount: 3000, cart: cart2, month: "August", orderTotalAmount: 3000},
 			want:  1200,
 			want1: "If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off.",
 			want2: 1080,
@@ -133,9 +133,9 @@ func TestCalculateDiscount(t *testing.T) {
 		// No discount because not fourth order or purchases made less than given amount in a month
 		{
 			name:  "Test case 6",
-			args:  args{totalOrder: 2, givenAmount: 3000, cart: cart2, month: "February"},
+			args:  args{totalOrder: 2, givenAmount: 3000, cart: cart2, month: "February", orderTotalAmount: 0},
 			want:  1200,
-			want1: "If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off.",
+			want1: "No discount",
 			want2: 1200,
 		},
 	}
@@ -145,7 +145,7 @@ func TestCalculateDiscount(t *testing.T) {
 			vars.GivenAmount = tt.args.givenAmount
 			vars.Cart = tt.args.cart
 			controllers.Month = tt.args.month
-			controllers.OrderTimestamp, _, _ = utils.GetTimestamp()
+			controllers.OrderTotalAmount = tt.args.orderTotalAmount
 
 			totalPriceWithoutDiscount, reason, totalPriceWithDiscount := controllers.CalculateDiscount()
 

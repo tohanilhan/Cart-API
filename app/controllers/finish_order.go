@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"math"
-	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -18,7 +17,6 @@ import (
 
 var (
 	OrderTotalAmount float64
-	OrderTimestamp   string
 	Month            string
 )
 
@@ -35,19 +33,20 @@ func CompleteOrder(c *fiber.Ctx) error {
 	timestamp, timex, Month := utils.GetTimestamp()
 
 	// get last order from db
-	query := fmt.Sprintf(sqls.GetOrder, db.DbConf.Schema, db.DbConf.TableNameOrder, vars.UserId, vars.GivenAmount, "'%"+Month+"%'")
+	query := fmt.Sprintf(sqls.GetOrder, db.DbConf.Schema, db.DbConf.TableNameOrder, vars.UserId, "'%"+Month+"%'")
 	rows, err := db.Db.Query(query)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
 			"message": "Error while getting orders",
 			"error":   err.Error(),
+			"query":   query,
 		})
 	}
 
 	// iterate over rows
 	for rows.Next() {
-		err := rows.Scan(&OrderTotalAmount, &OrderTimestamp)
+		err := rows.Scan(&OrderTotalAmount)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"success": false,
@@ -55,6 +54,8 @@ func CompleteOrder(c *fiber.Ctx) error {
 				"error":   err.Error(),
 			})
 		}
+
+		// if
 	}
 
 	// calculate discount
@@ -93,7 +94,7 @@ func CompleteOrder(c *fiber.Ctx) error {
 
 	// insert order to database
 	// (order_id, user_id, cart, discount, total_price_with_discount, total_price_without_discount, time,timestamp) values ('%s','%s','%s',%f,%f,%f,%d,'%s')
-	query = fmt.Sprintf(sqls.InsertOrder, db.DbConf.Schema, db.DbConf.TableNameOrder, order.OrderId, order.UserId, string(orderJson), order.Discount, order.TotalPriceWithDiscount, order.TotalPriceWithoutDiscount, order.Timex, order.Timestamp)
+	query = fmt.Sprintf(sqls.InsertOrder, db.DbConf.Schema, db.DbConf.TableNameOrder, order.OrderId, order.UserId, string(orderJson), order.Discount, order.TotalPriceWithDiscount, order.TotalPriceWithoutDiscount, order.Timex, order.Timestamp, reason)
 	_, err = db.Db.Exec(query)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -193,7 +194,7 @@ func CalculateDiscount() (float64, string, float64) {
 	}
 
 	// If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off.
-	if totalPriceWithoutDiscount > vars.DiscountOnOrderMoreThanGivenAmountInAMonth && strings.Contains(OrderTimestamp, Month) {
+	if OrderTotalAmount >= vars.GivenAmount {
 
 		vars.DiscountOnOrderMoreThanGivenAmountInAMonth = totalPriceWithoutDiscount * 0.1
 
@@ -220,6 +221,9 @@ func CalculateDiscount() (float64, string, float64) {
 
 	totalPriceWithDiscount := totalPriceWithoutDiscount - vars.FinalDiscount
 
+	if vars.FinalDiscount == 0 {
+		reason = "No discount"
+	}
 	// empty vars
 	vars.DiscountOnFourthOrderMoreThanGivenAmount = 0
 	vars.DiscountOnSameThirdProducts = 0
