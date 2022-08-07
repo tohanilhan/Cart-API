@@ -43,14 +43,15 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
   
  
 - #### **PostgreSQL:**
-  You have to run the below script to download and initialize **Postgresql**
 
-   *`docker run -d --name ctip-pg-cnt -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=kbueRm8nuEj9DBVK -e POSTGRES_DB=postgres -v /Users/tohanilhan/Vault/code/PgDb/DataVolume:/var/lib/postgresql/data -p 5433:5432 postgres:latest`*
+  Plese refer [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/db/Readme.md) for the initialization scripts.
 
 - #### **Go:**
+  
   If you haven't done already, You need to install Go by following the instructions on the [Go website](https://golang.org/doc/install).
 
 - #### **Project:**
+  
   You have to clone the project from the [Github repository](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project) and run the below script to build the project
    
    *`git clone https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project.git`*
@@ -66,6 +67,7 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
     `go run main.go`
 
 - #### **For Testing the Project's endpoints via Postman**
+ 
   There is a [Postman collection](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/PropertyFinder-FinalProject.postman_collection.json) that you can import to Postman and run the tests.
 
 ---
