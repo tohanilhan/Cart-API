@@ -9,8 +9,6 @@ import (
 
 func RemoveProductFromBasket(c *fiber.Ctx) error {
 
-	var isInCart bool
-
 	type Request struct {
 		ProductId string `json:"product_id"`
 	}
@@ -24,10 +22,32 @@ func RemoveProductFromBasket(c *fiber.Ctx) error {
 		})
 	}
 
+	isInCart := DeleteProductFromBasket(request.ProductId)
+	// // check if product is in vars.Cart
+
+	if !isInCart {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"success": false,
+			"message": "Product is not in cart",
+		})
+	}
+
+	// return success message
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"success": true,
+		"message": "Product removed from your Cart successfully",
+	})
+
+}
+
+func DeleteProductFromBasket(productId string) bool {
+
+	var isInCart bool
+
 	// check if product is in vars.Cart
 	for i, item := range vars.Cart {
 
-		if item.ProductId.String() == request.ProductId {
+		if item.ProductId.String() == productId {
 			isInCart = true
 			if vars.Cart[i].Quantity > 1 {
 				vars.Cart[i].Quantity--
@@ -50,18 +70,6 @@ func RemoveProductFromBasket(c *fiber.Ctx) error {
 		}
 
 	}
-
-	if !isInCart {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"success": false,
-			"message": "Product is not in cart",
-		})
-	}
-
-	// return success message
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"success": true,
-		"message": "Product removed from your Cart successfully",
-	})
+	return isInCart
 
 }

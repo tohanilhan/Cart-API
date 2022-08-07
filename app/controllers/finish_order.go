@@ -10,15 +10,16 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/db"
+	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/pkg/utils"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/sqls"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/structs"
-	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/util"
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/vars"
 )
 
 var (
 	orderTotalAmount float64
 	orderTimestamp   string
+	month            string
 )
 
 func CompleteOrder(c *fiber.Ctx) error {
@@ -31,7 +32,7 @@ func CompleteOrder(c *fiber.Ctx) error {
 		})
 	}
 
-	timestamp, timex, month := util.GetTimestamp()
+	timestamp, timex, month := utils.GetTimestamp()
 
 	// get last order from db
 	query := fmt.Sprintf(sqls.GetOrder, db.DbConf.Schema, db.DbConf.TableNameOrder, vars.UserId, vars.GivenAmount, "'%"+month+"%'")
@@ -56,78 +57,25 @@ func CompleteOrder(c *fiber.Ctx) error {
 		}
 	}
 
-	var totalPrice float64 // total price for the order
+	// calculate discount
+	totalPriceWithoutDiscount, reason, totalPriceWitDiscount := CalculateDiscount()
 
-	// If there are more than 3 items of the same product, then fourth and subsequent ones would have %8 off.
-	for _, item := range vars.Cart {
-		if item.Quantity > 3 {
-			vars.DiscountOnSameThirdProducts += item.Price * float64(item.Quantity-3) * 0.08
-
-		}
-		totalPrice += item.Price * float64(item.Quantity)
-	}
-	// totalPrice -= discountPrice
-
-	// check if this is the fourth order. Every fourth order whose total is more than given amount may have discount depending on products.
-
-	if vars.TotalOrder == 3 && totalPrice > vars.GivenAmount {
-
-		// Products whose VAT is %1 don’t have any discount but products whose VAT is %8 and %18 have discount of %10 and %15 respectively.
-		for _, item := range vars.Cart {
-			if item.Vat == 1 {
-				vars.DiscountOnFourthOrderMoreThanGivenAmount += 0
-				totalPrice += item.Price * float64(item.Quantity)
-			} else if item.Vat == 8 {
-				vars.DiscountOnFourthOrderMoreThanGivenAmount += item.Price * float64(item.Quantity) * 0.1
-				//totalPrice -= discountPrice
-			} else if item.Vat == 18 {
-				vars.DiscountOnFourthOrderMoreThanGivenAmount += item.Price * float64(item.Quantity) * 0.15
-				//totalPrice -= discountPrice
-			}
-		}
-		// reset order count
-		vars.TotalOrder = 0
-
-	} else {
-		// increment order count
-		vars.TotalOrder++
-	}
-
-	// If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off.
-	if totalPrice > vars.DiscountOnOrderMoreThanGivenAmountInAMonth && strings.Contains(orderTimestamp, month) {
-		vars.DiscountOnOrderMoreThanGivenAmountInAMonth += totalPrice * 0.1
-	}
-
-	// check which discount is bigger and apply it
-	if vars.DiscountOnFourthOrderMoreThanGivenAmount > vars.DiscountOnSameThirdProducts {
-		if vars.DiscountOnFourthOrderMoreThanGivenAmount > vars.DiscountOnOrderMoreThanGivenAmountInAMonth {
-			vars.FinalDiscount = vars.DiscountOnFourthOrderMoreThanGivenAmount
-		} else {
-			vars.FinalDiscount = vars.DiscountOnOrderMoreThanGivenAmountInAMonth
-		}
-	} else {
-		if vars.DiscountOnSameThirdProducts > vars.DiscountOnOrderMoreThanGivenAmountInAMonth {
-			vars.FinalDiscount = vars.DiscountOnSameThirdProducts
-		} else {
-			vars.FinalDiscount = vars.DiscountOnOrderMoreThanGivenAmountInAMonth
-		}
-	}
-
-	// apply discount to total price
-	totalPrice -= vars.FinalDiscount
+	// totalPriceWitDiscount should be rounded to 2 decimal places
+	totalPriceWitDiscount = math.Round(float64(totalPriceWitDiscount)*100) / 100
 
 	// discountPrice should be rounded to 2 decimal places
 	vars.FinalDiscount = math.Round(float64(vars.FinalDiscount)*100) / 100
 
-	// totalPrice should be rounded to 2 decimal places
-	totalPrice = math.Round(float64(totalPrice)*100) / 100
+	// totalPriceWithoutDiscount should be rounded to 2 decimal places
+	totalPriceWithoutDiscount = math.Round(float64(totalPriceWithoutDiscount)*100) / 100
 
 	// set order struct
 	order := structs.Order{
-		TotalPriceWithDiscount:    totalPrice - vars.FinalDiscount,
-		TotalPriceWithoutDiscount: totalPrice,
+		TotalPriceWithDiscount:    totalPriceWitDiscount,
+		TotalPriceWithoutDiscount: totalPriceWithoutDiscount,
 		Cart:                      vars.CartResponse.Cart,
 		OrderId:                   uuid.New(),
+		DiscountReason:            reason,
 		Discount:                  vars.FinalDiscount,
 		UserId:                    vars.UserId,
 		Timestamp:                 timestamp,
@@ -195,4 +143,88 @@ func CompleteOrder(c *fiber.Ctx) error {
 		"message": "Order completed successfully",
 		"order":   order,
 	})
+}
+
+func CalculateDiscount() (float64, string, float64) {
+
+	var totalPriceWithoutDiscount float64 // total price for the order
+	var reason string                     // reason for discount
+
+	// If there are more than 3 items of the same product, then fourth and subsequent ones would have %8 off.
+	for _, item := range vars.Cart {
+		if item.Quantity > 3 {
+			vars.DiscountOnSameThirdProducts += item.Price * float64(item.Quantity-3) * 0.08
+
+		} else {
+			// haveDiscountOnThirdProducts = false
+			vars.DiscountOnSameThirdProducts = 0
+			// discountOnSameThirdProductsReason = "No discount"
+		}
+		totalPriceWithoutDiscount += item.Price * float64(item.Quantity)
+	}
+
+	// totalPriceWithoutDiscount -= discountPrice
+
+	// check if this is the fourth order. Every fourth order whose total is more than given amount may have discount depending on products.
+	if totalPriceWithoutDiscount >= vars.GivenAmount && vars.TotalOrder == 3 {
+
+		// Products whose VAT is %1 don’t have any discount but products whose VAT is %8 and %18 have discount of %10 and %15 respectively.
+		for _, item := range vars.Cart {
+			if item.Vat == 1 {
+				vars.DiscountOnFourthOrderMoreThanGivenAmount += 0
+
+			} else if item.Vat == 8 {
+
+				vars.DiscountOnFourthOrderMoreThanGivenAmount += item.Price * float64(item.Quantity) * 0.1
+
+			} else if item.Vat == 18 {
+
+				vars.DiscountOnFourthOrderMoreThanGivenAmount += item.Price * float64(item.Quantity) * 0.15
+
+			}
+
+		}
+		// reset order count
+		vars.TotalOrder = 0
+
+	} else {
+		// increment order count
+		vars.TotalOrder++
+	}
+
+	// If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off.
+	if totalPriceWithoutDiscount > vars.DiscountOnOrderMoreThanGivenAmountInAMonth && strings.Contains(orderTimestamp, month) {
+
+		vars.DiscountOnOrderMoreThanGivenAmountInAMonth = totalPriceWithoutDiscount * 0.1
+
+	}
+
+	// check which discount is bigger and apply it
+	if vars.DiscountOnFourthOrderMoreThanGivenAmount > vars.DiscountOnSameThirdProducts {
+		if vars.DiscountOnFourthOrderMoreThanGivenAmount > vars.DiscountOnOrderMoreThanGivenAmountInAMonth {
+			vars.FinalDiscount = vars.DiscountOnFourthOrderMoreThanGivenAmount
+			reason = "Every fourth order whose total is more than given amount may have discount depending on products. Products whose VAT is %1 don’t have any discount but products whose VAT is %8 and %18 have discount of %10 and %15 respectively."
+		} else {
+			vars.FinalDiscount = vars.DiscountOnOrderMoreThanGivenAmountInAMonth
+			reason = "If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off."
+		}
+	} else {
+		if vars.DiscountOnSameThirdProducts > vars.DiscountOnOrderMoreThanGivenAmountInAMonth {
+			vars.FinalDiscount = vars.DiscountOnSameThirdProducts
+			reason = "If there are more than 3 items of the same product, then fourth and subsequent ones would have %8 off."
+		} else {
+			vars.FinalDiscount = vars.DiscountOnOrderMoreThanGivenAmountInAMonth
+			reason = "If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off."
+		}
+	}
+
+	totalPriceWithDiscount := totalPriceWithoutDiscount - vars.FinalDiscount
+
+	// empty vars
+	vars.DiscountOnFourthOrderMoreThanGivenAmount = 0
+	vars.DiscountOnSameThirdProducts = 0
+	vars.DiscountOnOrderMoreThanGivenAmountInAMonth = 0
+	vars.FinalDiscount = 0
+
+	return totalPriceWithoutDiscount, reason, totalPriceWithDiscount
 }

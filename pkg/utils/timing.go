@@ -2,18 +2,14 @@ package utils
 
 import (
 	"strings"
-	timex "time"
+	"time"
 )
 
-func GetMoment() (string, int64){
-	TR_TIME_OFFSET := 3
-
-	t:= timex.UnixMilli(timex.Now().UTC().UnixMilli())
-	t = t.Add(timex.Duration(TR_TIME_OFFSET) * timex.Hour)
-	timestamp := t.UTC().Format(timex.RFC3339Nano)
-	timestamp = strings.ReplaceAll(timestamp, "T"," ")
-	timestamp = strings.TrimSuffix(timestamp,"Z")
-	return timestamp, t.UnixMilli()
-
+func GetTimestamp() (string, int64, string) {
+	timeMillis := time.Now().UTC().UnixMilli()
+	t := time.UnixMilli(timeMillis)
+	t = t.Add(time.Duration(3) * time.Hour)
+	timestamp := t.UTC().Format("2006-January-02 15:04:05")
+	timestamp = strings.TrimSuffix(timestamp, "Z")
+	return timestamp, timeMillis, t.Month().String()
 }
-
