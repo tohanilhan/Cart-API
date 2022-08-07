@@ -87,6 +87,7 @@ func initDb() {
 
 func initUserID() {
 	// UserId will be created only once when program starts by using singleton pattern
+	// If you want to create new user id, you need to restart the program
 	once.Do(func() {
 		vars.UserId = uuid.New()
 	})
