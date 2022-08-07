@@ -44,7 +44,7 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
  
 - #### **PostgreSQL:**
 
-  Plese refer [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/db/Readme.md) for the initialization scripts.
+  Plese refer [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/db/README.md) for the initialization scripts.
 
 - #### **Go:**
   
