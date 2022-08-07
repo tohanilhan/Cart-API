@@ -10,6 +10,7 @@ ADD . .
 # download dependencies
 RUN go mod download
 # build proglication
+# CGO_ENABLED is disabled for cross system compilation
 RUN CGO_ENABLED=0 GOOS=linux GODEBUG=netdns=1 GOARCH=amd64 go build -o prog .
 # build stage #1
 FROM alpine:latest AS stage1
