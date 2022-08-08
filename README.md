@@ -92,37 +92,76 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
    
   Or you can run the project directly by running the below script from the same directory as the project:
     
-    `go run main.go`
+`go run main.go`
     
-    **Note:** You have to change the DB_HOST to 127.0.0.1 in .env file to run the project as a docker container.
+**Note:** You have to change the DB_HOST to 127.0.0.1 in .env file to run the project as a docker container.
 
-    **Note:** If you are using **VS Code** as your editor, you can simply run this project with debug mode by pressing **F5**.
+**Note:** If you are using **VS Code** as your editor, you can simply run this project with debug mode by pressing **F5**.
 
 ---
 
-- #### **For Testing the Project's endpoints via Postman**
+#### **For Testing the Project's endpoints via Postman**
+
+   You can download Postman by following the instructions on the [Postman website](https://www.getpostman.com/).
  
-  There is a [Postman collection](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/docs/PropertyFinder-FinalProject.postman_collection.json) that you can import to Postman and run the tests.
+   There is a [Postman collection](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/docs/PropertyFinder-FinalProject.postman_collection.json) that you can import to Postman and run the tests.
 
 ---
 
-- #### **For Testing the Project**
+#### **For Testing the Project**
      
   You can run the below script to run the unit tests:
   
   **You have to be in the same file with the test files**
 
 
-    *`go test -v  {test-file-name} {original-file-name}`*
+   *`go test -v  {test-file-name} {original-file-name}`*
 
-    For example, if you want to run the unit tests for the `finish_order.go` file, you can run the below script:
+For example, if you want to run the unit tests for the `finish_order.go` file, you can run the below script:
 
-    *`go test -v  finish_order_test.go finish_order.go`*
+*`go test -v  finish_order_test.go finish_order.go`*
 
-   **Or you can directly test the whole unit test in the given directory by running the below script:**
+**Or you can directly test the whole unit test in the given directory by running the below script:**
 
-    *`go test -v  .`*
+*`go test -v  .`*
 
-    **If you want to run the unit test for main, you need to make sure that DB_HOST is set to 127.0.0.1 in .env file**
+**If you want to run the unit test for main, you need to make sure that DB_HOST is set to 127.0.0.1 in .env file**
+
+---
+
+### Endpoints and their functionality
+
+ 
+  
+**1. Get all products**
+   
+**Endpoint:** `http://127.0.0.1:8080/api/v1/products-api/products//products/`
+
+**Functionality:**
+Get all products from the database.
+
+**2. Add product to basket**
+   
+**Endpoint:** `http://127.0.0.1:8080/api/v1/products-api/products/products/`
+
+**Functionality:** *Add product to the cart by sending the product id.*
+
+**3. Show basket**
+   
+**Endpoint:** `http://127.0.0.1:8080/api/v1/products-api/products/products/basket/`
+
+**Functionality:** *Show the products in the basket.*
+
+**4. Remove product from basket**
+   
+**Endpoint:** `http://127.0.0.1:8080/api/v1/products-api/products/products/basket/`
+
+**Functionality:** *Delete product from the cart by sending the product id.*
+
+**5. Complete order**
+   
+**Endpoint:**`http://127.0.0.1:8080/api/v1/products-api/products/products/order`
+
+**Functionality:** *Complete the order. Under some circumstances, discount can be applied. If any discount can be applied, apply the discount and finalize the order.*
 
 ---
