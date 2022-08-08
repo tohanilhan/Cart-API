@@ -9,6 +9,7 @@ import (
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/structs"
 )
 
+// ListAllProducts returns all products
 func ListAllProducts(c *fiber.Ctx) error {
 
 	var products []structs.Product // object to store products

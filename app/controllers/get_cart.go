@@ -5,6 +5,7 @@ import (
 	"github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/vars"
 )
 
+// ShowBasket returns the cart of the user
 func ShowBasket(c *fiber.Ctx) error {
 
 	// return cart if cart is not empty
@@ -15,7 +16,7 @@ func ShowBasket(c *fiber.Ctx) error {
 			"cart":    vars.CartResponse,
 		})
 	} else {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
 			"success": false,
 			"message": "Cart is empty",
 		})

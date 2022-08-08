@@ -54,15 +54,16 @@ func main() {
 
 }
 
+// setupRoutes function sets up routes for fiber app
 func setupRoutes(app *fiber.App) {
 
 	api := app.Group("/api/v1")
 
-	// give response when at /api
-	api.Post("", func(c *fiber.Ctx) error {
+	// give response when at /api/v1
+	api.Get("", func(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
 			"success": true,
-			"message": "You are at the api endpoint",
+			"message": "Server is up and running!",
 		})
 	})
 
@@ -73,8 +74,14 @@ func setupRoutes(app *fiber.App) {
 
 // initFiber function initializes fiber app
 func initFiber() {
+
+	// setup config
 	config = configs.FiberConfig()
+
+	// Fiber instance
 	app = fiber.New(config)
+
+	// Middleware
 	middleware.FiberMiddleware(app)
 	log.Println("Fiber init OK.")
 }
@@ -85,6 +92,7 @@ func initDb() {
 	log.Println("Db init OK.")
 }
 
+// initUserID function initializes user id
 func initUserID() {
 	// UserId will be created only once when program starts by using singleton pattern
 	// If you want to create new user id, you need to restart the program
@@ -94,6 +102,7 @@ func initUserID() {
 
 }
 
+// initGivenAmount function initializes given amount
 func initGivenAmount() {
 
 	once.Do(func() {

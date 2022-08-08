@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// GetTimestamp returns the current date,timestamp in milliseconds and month.
 func GetTimestamp() (string, int64, string) {
 	timeMillis := time.Now().UTC().UnixMilli()
 	t := time.UnixMilli(timeMillis)

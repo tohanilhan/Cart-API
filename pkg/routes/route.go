@@ -8,18 +8,19 @@ import (
 
 func PublicRoute(route fiber.Router) {
 
-	route.Get("/products/", controllers.ListAllProducts) //Get all products
+	//Get all products
+	route.Get("/products/", controllers.ListAllProducts)
 
-	// add product to basket
-	route.Post("/products/", controllers.AddProductToBasket) //Add product to basket
+	//Add product to basket
+	route.Post("/products/", controllers.AddProductToBasket)
 
-	// show cart of products in basket
-	route.Get("/products/basket/", controllers.ShowBasket) //Show basket
+	//Show basket
+	route.Get("/products/basket/", controllers.ShowBasket)
 
-	// remove product from basket
-	route.Delete("/products/basket/", controllers.RemoveProductFromBasket) //Remove product from basket
+	//Remove product from basket
+	route.Delete("/products/basket/", controllers.RemoveProductFromBasket)
 
-	// complete order
-	route.Get("/products/order", controllers.CompleteOrder) //Complete order
+	//Complete order
+	route.Get("/products/order", controllers.CompleteOrder)
 
 }

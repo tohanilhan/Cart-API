@@ -20,11 +20,12 @@ var (
 	Month            string
 )
 
+// CompleteOrder function is used to complete the order.
 func CompleteOrder(c *fiber.Ctx) error {
 
 	// check if vars.Cart is empty
 	if len(vars.CartResponse.Cart) == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
 			"success": false,
 			"message": "Cart is empty",
 		})
@@ -146,6 +147,7 @@ func CompleteOrder(c *fiber.Ctx) error {
 	})
 }
 
+// CalculateDiscount function is used to calculate discount.
 func CalculateDiscount() (float64, string, float64) {
 
 	var totalPriceWithoutDiscount float64 // total price for the order
