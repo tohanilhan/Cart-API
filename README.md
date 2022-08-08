@@ -137,8 +137,9 @@ For example, if you want to run the unit tests for the `finish_order.go` file, y
    
 **Endpoint:** `http://127.0.0.1:8080/api/v1/products-api/products//products/`
 
-**Functionality:**
-Get all products from the database.
+**Functionality:** *Get all products from the database.*
+
+**Method:** GET
 
 **2. Add product to basket**
    
@@ -146,11 +147,15 @@ Get all products from the database.
 
 **Functionality:** *Add product to the cart by sending the product id.*
 
+**Method:** POST
+
 **3. Show basket**
    
 **Endpoint:** `http://127.0.0.1:8080/api/v1/products-api/products/products/basket/`
 
 **Functionality:** *Show the products in the basket.*
+
+**Method:** GET
 
 **4. Remove product from basket**
    
@@ -158,10 +163,14 @@ Get all products from the database.
 
 **Functionality:** *Delete product from the cart by sending the product id.*
 
+**Method:** DELETE
+
 **5. Complete order**
    
 **Endpoint:**`http://127.0.0.1:8080/api/v1/products-api/products/products/order`
 
 **Functionality:** *Complete the order. Under some circumstances, discount can be applied. If any discount can be applied, apply the discount and finalize the order.*
+
+**Method:** GET
 
 ---
