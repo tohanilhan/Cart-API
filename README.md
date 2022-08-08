@@ -75,8 +75,15 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
    
    **Note:** If you want to run the project as a docker container, you have to change the **DB_HOST** to the **IP address of the container** mentioned in the **.env** file. Refer [**here**](.env) or [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/.env) for the .env file.
 
+   **You can get the IP address of the container by running the below command by replecing *{your-container-name}* with a container name you want to inspect**
 
-   **Example:**
+   *`docker inspect --format '{{ .NetworkSettings.IPAddress }}' {your-container-name}`* 
+      
+   **Example For docker inspect:**
+   *`docker inspect --format '{{ .NetworkSettings.IPAddress }}' postgres-cnt`*
+
+
+   **Example for running docker container:**
 
    *`docker build -t project-pf-img:1.0 .`*
 
