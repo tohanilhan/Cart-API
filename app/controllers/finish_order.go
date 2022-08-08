@@ -55,8 +55,6 @@ func CompleteOrder(c *fiber.Ctx) error {
 				"error":   err.Error(),
 			})
 		}
-
-		// if
 	}
 
 	// calculate discount
@@ -125,11 +123,6 @@ func CompleteOrder(c *fiber.Ctx) error {
 
 	}
 
-	log.Println("Same third products discount: ", vars.DiscountOnSameThirdProducts)
-	log.Println("Discount on more than given amount in a month: ", vars.DiscountOnOrderMoreThanGivenAmountInAMonth)
-	log.Println("Discount on fourth order: ", vars.DiscountOnFourthOrderMoreThanGivenAmount)
-	log.Println("Final Discount: ", vars.FinalDiscount)
-
 	// reset cart
 	vars.Cart = nil
 	vars.CartResponse = structs.CartResponse{}
@@ -159,14 +152,10 @@ func CalculateDiscount() (float64, string, float64) {
 			vars.DiscountOnSameThirdProducts += item.Price * float64(item.Quantity-3) * 0.08
 
 		} else {
-			// haveDiscountOnThirdProducts = false
 			vars.DiscountOnSameThirdProducts = 0
-			// discountOnSameThirdProductsReason = "No discount"
 		}
 		totalPriceWithoutDiscount += item.Price * float64(item.Quantity)
 	}
-
-	// totalPriceWithoutDiscount -= discountPrice
 
 	// check if this is the fourth order. Every fourth order whose total is more than given amount may have discount depending on products.
 	if totalPriceWithoutDiscount >= vars.GivenAmount && vars.TotalOrder == 3 {
@@ -198,39 +187,42 @@ func CalculateDiscount() (float64, string, float64) {
 	// If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off.
 	if OrderTotalAmount >= vars.GivenAmount {
 
+		log.Println(vars.GivenAmount)
 		vars.DiscountOnOrderMoreThanGivenAmountInAMonth = totalPriceWithoutDiscount * 0.1
 
 	}
 
-	// check which discount is bigger and apply it
-	if vars.DiscountOnFourthOrderMoreThanGivenAmount > vars.DiscountOnSameThirdProducts {
-		if vars.DiscountOnFourthOrderMoreThanGivenAmount > vars.DiscountOnOrderMoreThanGivenAmountInAMonth {
-			vars.FinalDiscount = vars.DiscountOnFourthOrderMoreThanGivenAmount
-			reason = "Every fourth order whose total is more than given amount may have discount depending on products. Products whose VAT is %1 don’t have any discount but products whose VAT is %8 and %18 have discount of %10 and %15 respectively."
+	// Check if there is any discount
+	if vars.DiscountOnFourthOrderMoreThanGivenAmount > 0 || vars.DiscountOnSameThirdProducts > 0 || vars.DiscountOnOrderMoreThanGivenAmountInAMonth > 0 {
+		// check which discount is bigger and apply it
+		if vars.DiscountOnFourthOrderMoreThanGivenAmount > vars.DiscountOnSameThirdProducts {
+			if vars.DiscountOnFourthOrderMoreThanGivenAmount > vars.DiscountOnOrderMoreThanGivenAmountInAMonth {
+				vars.FinalDiscount = vars.DiscountOnFourthOrderMoreThanGivenAmount
+				reason = "Every fourth order whose total is more than given amount may have discount depending on products. Products whose VAT is %1 don’t have any discount but products whose VAT is %8 and %18 have discount of %10 and %15 respectively."
+			} else {
+				vars.FinalDiscount = vars.DiscountOnOrderMoreThanGivenAmountInAMonth
+				reason = "If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off."
+			}
 		} else {
-			vars.FinalDiscount = vars.DiscountOnOrderMoreThanGivenAmountInAMonth
-			reason = "If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off."
+			if vars.DiscountOnSameThirdProducts > vars.DiscountOnOrderMoreThanGivenAmountInAMonth {
+				vars.FinalDiscount = vars.DiscountOnSameThirdProducts
+				reason = "If there are more than 3 items of the same product, then fourth and subsequent ones would have %8 off."
+			} else {
+				vars.FinalDiscount = vars.DiscountOnOrderMoreThanGivenAmountInAMonth
+				reason = "If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off."
+			}
 		}
 	} else {
-		if vars.DiscountOnSameThirdProducts > vars.DiscountOnOrderMoreThanGivenAmountInAMonth {
-			vars.FinalDiscount = vars.DiscountOnSameThirdProducts
-			reason = "If there are more than 3 items of the same product, then fourth and subsequent ones would have %8 off."
-		} else {
-			vars.FinalDiscount = vars.DiscountOnOrderMoreThanGivenAmountInAMonth
-			reason = "If the customer made purchase which is more than given amount in a month then all subsequent purchases should have %10 off."
-		}
+		vars.FinalDiscount = 0
+		reason = "No discount"
 	}
 
 	totalPriceWithDiscount := totalPriceWithoutDiscount - vars.FinalDiscount
 
-	if vars.FinalDiscount == 0 {
-		reason = "No discount"
-	}
 	// empty vars
 	vars.DiscountOnFourthOrderMoreThanGivenAmount = 0
 	vars.DiscountOnSameThirdProducts = 0
 	vars.DiscountOnOrderMoreThanGivenAmountInAMonth = 0
-	vars.FinalDiscount = 0
 
 	return totalPriceWithoutDiscount, reason, totalPriceWithDiscount
 }
