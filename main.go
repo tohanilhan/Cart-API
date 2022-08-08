@@ -105,11 +105,9 @@ func initUserID() {
 // initGivenAmount function initializes given amount
 func initGivenAmount() {
 
-	once.Do(func() {
-		vars.GivenAmount, err = strconv.ParseFloat(os.Getenv("GIVEN_AMOUNT"), 64)
-		if err != nil {
-			log.Fatal(err)
-		}
-	})
+	vars.GivenAmount, err = strconv.ParseFloat(os.Getenv("GIVEN_AMOUNT"), 64)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
