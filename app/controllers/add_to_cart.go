@@ -68,9 +68,17 @@ func AddProductToBasket(c *fiber.Ctx) error {
 
 				if vars.Cart[i].ProductId == vars.Product.ProductId {
 
-					// add product to cart
+					if vars.Cart[i].Quantity >= vars.Product.Quantity {
+						return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+							"success": false,
+							"message": "Product is out of stock",
+						})
+					}
+
+					// add product to cart if stock is available
 					vars.Cart[i].Quantity++
 					isInCart = true
+
 				}
 
 				// end loop if product is in cart

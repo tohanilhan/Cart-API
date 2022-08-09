@@ -27,7 +27,7 @@ func RemoveProductFromBasket(c *fiber.Ctx) error {
 	// // check if product is in vars.Cart
 
 	if !isInCart {
-		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
 			"message": "Product is not in cart",
 		})

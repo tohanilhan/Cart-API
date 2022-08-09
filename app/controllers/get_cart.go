@@ -16,7 +16,7 @@ func ShowBasket(c *fiber.Ctx) error {
 			"cart":    vars.CartResponse,
 		})
 	} else {
-		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
 			"message": "Cart is empty",
 		})

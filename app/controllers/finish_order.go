@@ -25,10 +25,20 @@ func CompleteOrder(c *fiber.Ctx) error {
 
 	// check if vars.Cart is empty
 	if len(vars.CartResponse.Cart) == 0 {
-		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
 			"message": "Cart is empty",
 		})
+	}
+
+	// check the stock of the products
+	for _, item := range vars.CartResponse.Cart {
+		if item.Quantity > vars.Product.Quantity {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"success": false,
+				"message": "Not enough stock",
+			})
+		}
 	}
 
 	timestamp, timex, Month := utils.GetTimestamp()
