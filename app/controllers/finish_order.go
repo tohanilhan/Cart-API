@@ -31,16 +31,6 @@ func CompleteOrder(c *fiber.Ctx) error {
 		})
 	}
 
-	// check the stock of the products
-	for _, item := range vars.CartResponse.Cart {
-		if item.Quantity > vars.Product.Quantity {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"success": false,
-				"message": "Not enough stock",
-			})
-		}
-	}
-
 	timestamp, timex, Month := utils.GetTimestamp()
 
 	// get last order from db
