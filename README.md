@@ -1,7 +1,7 @@
 
 # Patika.dev PropertyFinder Go Bootcamp Final Project
 
-*This repository contains the necessary codes &amp; info about the project given in the Patika.dev PropertyFinder Go bootcamp.*
+*Simple Shopping Cart API that has some bussiness rules such as discounts, VAT. It comes with a PostgreSQL to store data and has necessary files for containerization.*
 
 ---
 
