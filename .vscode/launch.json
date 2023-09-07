@@ -9,11 +9,11 @@
             "type": "go",
             "request": "launch",
             "mode": "debug",
-            "program": "main.go",
+            "program": "cart-api/main.go",
             "args": [
                 "local",
             ],
-            "envFile": "${workspaceFolder}/.env",
+            "envFile": "${workspaceFolder}/cart-api/.env",
         },
     ]
 }

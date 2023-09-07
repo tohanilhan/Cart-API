@@ -1,0 +1,56 @@
+services:
+  postgres-svc:
+    image: postgres-img:1.0.0
+    container_name: postgres-container
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASS
+      - POSTGRES_DB=$POSTGRES_DB
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+        cart-network:
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  cart-api-svc:
+    image: cart-api:1.0.0
+    container_name: cart-api-container
+    environment:
+      - API_LABEL=$API_LABEL
+      - API_VERSION=$API_VERSION
+      - API_PORT=$API_PORT
+      - API_READ_TIMEOUT=$API_READ_TIMEOUT
+      - API_STAGE_STATUS=$API_STAGE_STATUS
+      - DB_HOST=$DB_HOST
+      - DB_PORT=$DB_PORT
+      - DB_DB=$DB_DB
+      - DB_SCHEMA=$DB_SCHEMA
+      - DB_USER=$DB_USER
+      - DB_PASS=$DB_PASS
+      - DB_MAX_CONNECTIONS=$DB_MAX_CONNECTIONS
+      - DB_MAX_IDLE_CONNECTIONS=$DB_MAX_IDLE_CONNECTIONS
+      - DB_MAX_LIFETIME_CONNECTIONS=$DB_MAX_LIFETIME_CONNECTIONS
+      - DB_SSL_MODE=$DB_SSL_MODE
+      - GIVEN_AMOUNT=$GIVEN_AMOUNT
+    ports:
+      - 0.0.0.0:$API_PORT:$API_PORT
+    depends_on:
+      postgres-svc:
+        condition: service_healthy
+    networks:
+      cart-network:
+
+volumes:
+    postgres-data:
+
+
+networks:
+  cart-network:
+    driver: bridge
