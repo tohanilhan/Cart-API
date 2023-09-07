@@ -4,7 +4,7 @@
 .gitignore
 Dockerfile
 Makefile
-LICENSE
+cart-api/LICENSE
 **/*.md
 **/*_test.go
 **/*.env
@@ -13,4 +13,4 @@ todo.txt
 .git/
 .github/
 build/
-vscode/
+vscode//cart-api/.env

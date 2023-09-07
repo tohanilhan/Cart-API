@@ -1,10 +1,11 @@
 
-# Patika.dev PropertyFinder Go Bootcamp Final Project
-
-*Simple Shopping Cart API that has some bussiness rules such as discounts, VAT. It comes with a PostgreSQL to store data and has necessary files for containerization.*
+# Cart API
 
 ---
 
+*Simple Shopping Cart API that has some business rules such as discounts. It comes with a PostgresSQL to store data and has necessary files for containerization and **Makefile** for deployment.*
+
+---
 # About the project
 
 *The functions of this service are as follows;*
@@ -20,9 +21,10 @@
 5. Complete Order
    - Users can create an order with the products they add to their cart. There is no need to implement any payment mechanism. You can assume that when an order is completed it is fully paid.
 
-*Some business rules*
+## Some business rules
 
 1. Products always have price and VAT (Value Added Tax, or KDV). VAT might be different for different products. Typical VAT percentage is %1, %8 and %18. So use these values for your products.
+
 2. There might be discount in following situations:
    1.  Every fourth order whose total is more than given amount may have discount
 depending on products. Products whose VAT is %1 don’t have any discount but products whose VAT is %8 and %18 have discount of %10 and %15 respectively.
@@ -42,13 +44,6 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
     - *`docker run hello-world`*
   
  ---
-
-- #### **PostgreSQL:**
-
-  Plese refer [**here**](docs/README.md) or [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/docs/README.md) for the initialization scripts.
-
----
-
 - #### **Go:**
   
   If you haven't done already, You need to install Go by following the instructions on the [Go website](https://golang.org/doc/install).
@@ -63,76 +58,44 @@ depending on products. Products whose VAT is %1 don’t have any discount but pr
 
 ---
 
-- #### **Run the Project:**
+#### **Run the Project:**
 
-     You have to make sure that you are in the **same directory as the project**. Then you can run the below script:
+You have to make sure that you are in the **same directory as the project**. Then you can run the below script:
 
-   *`docker build -t {your-desired-image-name} .`*
+####  **Makefile** 
+- ##### Commands
+  - **deploy-all** : Deploy all services
+  - **deploy-postgresql** : Deploy postgresql service
+  - **deploy-api** : Deploy cart-api service
+  - **build-all**: Build all images
+  - **build-postgres** : Build postgresql image
+  - **build-api** : Build cart-api image
+  - **clean-all** : Clean all images and containers
+  - **clean-images** : Clean all images
+  - **clean-containers** : Clean all containers
+  - **clean-postgres** : Clean postgresql image and container
+  - **clean-api** : Clean cart-api image and container
+  - **clean-volumes** : Clean all volumes
+  - **clean-networks** : Clean all networks
+  - **down-all** : Down all services
+  - **down-postgres** : Down postgresql service
+  - **up-all** : Up all services
+  - **down-api** : Down cart-api service
 
-   *`docker run -d --env-file=.env --name {your-desired- container-name} -p {your-desired-port}:8080 {your-desired-image-name}`*
-
-   **Note:** Be careful with the port number. You **can't** run this project as a docker container while **DB_HOST** is set to **127.0.0.1** in .env file
-   
-   **Note:** If you want to run the project as a docker container, you have to change the **DB_HOST** to the **IP address of the container** mentioned in the **.env** file. Refer [**here**](.env) or [**here**](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/.env) for the .env file.
-
-   **You can get the IP address of the container by running the below command by replecing *{your-container-name}* with a container name you want to inspect**
-
-   *`docker inspect --format '{{ .NetworkSettings.IPAddress }}' {your-container-name}`* 
-      
-   **Example For docker inspect:**
-   *`docker inspect --format '{{ .NetworkSettings.IPAddress }}' postgres-cnt`*
+- ##### Usage
+    ```make deploy-all``` 
 
 
-   **Example for running docker container:**
+- Or you can run the project directly by running the below script from the cart-api directory inside the project:
 
-   *`docker build -t project-pf-img:1.0 .`*
-
-   *`docker run -d --env-file=.env --name project-pf-cnt -p 8080:8080 project-pf-img:1.0`*
-
-   
-  Or you can run the project directly by running the below script from the same directory as the project:
-    
-`go run main.go`
-    
-**Note:** You have to change the DB_HOST to 127.0.0.1 in .env file to run the project as a docker container.
+    ```go run main.go```
 
 **Note:** If you are using **VS Code** as your editor, you can simply run this project with debug mode by pressing **F5**.
 
 ---
 
-#### **For Testing the Project's endpoints via Postman**
-
-   You can download Postman by following the instructions on the [Postman website](https://www.getpostman.com/).
- 
-   There is a [Postman collection](https://github.com/tohanilhan/Patika.dev-Property-Finder-Go-Bootcamp-Final-Project/blob/main/docs/PropertyFinder-FinalProject.postman_collection.json) that you can import to Postman and run the tests.
-
----
-
-#### **For Testing the Project**
-     
-  You can run the below script to run the unit tests:
-  
-  **You have to be in the same file with the test files**
-
-
-   *`go test -v  {test-file-name} {original-file-name}`*
-
-For example, if you want to run the unit tests for the `finish_order.go` file, you can run the below script:
-
-*`go test -v  finish_order_test.go finish_order.go`*
-
-**Or you can directly test the whole unit test in the given directory by running the below script:**
-
-*`go test -v  .`*
-
-**If you want to run the unit test for main, you need to make sure that DB_HOST is set to 127.0.0.1 in .env file**
-
----
-
 ### Endpoints and their functionality
 
- 
-  
 **1. Get all products**
    
 **Endpoint:** `http://127.0.0.1:8080/api/v1/products-api/products//products/`
@@ -155,7 +118,7 @@ For example, if you want to run the unit tests for the `finish_order.go` file, y
 
 **Functionality:** *Show the products in the basket.*
 
-**Method:** GET
+**Method:** POST
 
 **4. Remove product from basket**
    
@@ -170,6 +133,14 @@ For example, if you want to run the unit tests for the `finish_order.go` file, y
 **Endpoint:**`http://127.0.0.1:8080/api/v1/products-api/products/products/order`
 
 **Functionality:** *Complete the order. Under some circumstances, discount can be applied. If any discount can be applied, apply the discount and finalize the order.*
+
+**Method:** POST
+
+**6. Ping**
+
+**Endpoint:**`http://127.0.0.1:8080/api/v1/ping`
+
+**Functionality:** *Check if the service is up.*
 
 **Method:** GET
 
