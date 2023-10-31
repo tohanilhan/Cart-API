@@ -15,7 +15,7 @@ var Db *sqlx.DB
 
 func PostgreSQLConnection() error {
 
-	postgresConnURL, err := repository.ConnectionURLBuilder("sentinel-postgres")
+	postgresConnURL, err := repository.ConnectionURLBuilder("postgres")
 	if err != nil {
 		return err
 	}

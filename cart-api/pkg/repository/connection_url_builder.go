@@ -10,7 +10,7 @@ func ConnectionURLBuilder(n string) (string, error) {
 	var url string
 
 	switch n {
-	case "sentinel-postgres":
+	case "postgres":
 		dbHost := vars.AppConfigs.PostgresqlHost
 		dbPort := vars.AppConfigs.PostgresqlPort
 		dbUser := vars.AppConfigs.PostgresqlUser
